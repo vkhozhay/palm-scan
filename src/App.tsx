@@ -1,7 +1,34 @@
 import {useEffect, useRef, useState} from 'react'
 import './App.css'
 import * as axios from "axios";
+interface Point {
+    x: number;
+    y: number;
+}
 
+interface Prediction {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    confidence: number;
+    class: string;
+    points: Point[];
+    class_id: number;
+    detection_id: string;
+}
+
+interface Image {
+    width: number;
+    height: number;
+}
+
+interface ResultTest {
+    inference_id: string;
+    time: number;
+    image: Image;
+    predictions: Prediction[];
+}
 const resultTest = {
     "inference_id": "85fc6519-9818-491e-b810-4298b1837416",
     "time": 0.09521130799930688,
@@ -2772,10 +2799,11 @@ const resultTest = {
         }
     ]
 }
+console.log({resultTest})
 
 function App() {
-    const [imageBase64, setImageBase64] = useState<string | null>(null);
-    const [result, setResult] = useState<Record<string, any>>({});
+    const [imageBase64, setImageBase64] = useState<string>('');
+    const [result, setResult] = useState<ResultTest>();
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
